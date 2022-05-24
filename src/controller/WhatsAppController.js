@@ -203,23 +203,69 @@ class WhatsAppController {
 
             this.el.btnAttachCamera.on('click', e=> {
 
-                console.log("camera")
+                this.el.panelMessagesContainer.hide();
+                this.el.panelCamera.addClass('open');
+                this.el.panelCamera.css({
+
+                    'height': 'calc(100% - 120px);'
+                });
+
+
+            })
+
+            this.el.btnClosePanelCamera.on('click', e=> {
+
+                this.closeAllMainPanel();
+                this.el.panelMessagesContainer.show();
+            })
+
+            this.el.btnTakePicture.on('click', e => {
+
+                console.log("takePicture")
             })
 
             this.el.btnAttachPhoto.on('click', e=> {
+                
+                this.el.inputPhoto.click();
 
-                console.log("photo")
+            })
+
+            this.el.inputPhoto.on('change', e=> {
+
+
+                console.log(this.el.inputPhoto.files);
+
+                [...this.el.inputPhoto.files].forEach(file => {
+
+                    console.log(file);
+
+                })
             })
 
             this.el.btnAttachDocument.on('click', e=> {
 
-                console.log("document")
+                this.closeAllMainPanel();
+
+                this.el.panelDocumentPreview.addClass
+
+                this.el.panelDocumentPrevie.css({
+
+                    'height': 'calc(100% - 120px);'
+                });
+
             })
 
             this.el.btnAttachContact.on('click', e=> {
 
                 console.log("contact")
             })
+        }
+
+        closeAllMainPanel(){
+
+            this.el.panelMessagesContainer.hide();
+            this.el.panelDocumentPreview.removeClass('open');
+            this.el.panelCamera.removeClass('open')
         }
 
 
