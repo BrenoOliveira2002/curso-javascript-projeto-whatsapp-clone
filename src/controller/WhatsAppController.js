@@ -214,8 +214,10 @@ class WhatsAppController {
                 this.el.panelCamera.addClass('open');
                 this.el.panelCamera.css({
 
-                    'height': 'calc(100% - 120px);'
+                    'height': '100%'
                 });
+
+                this._camera = new CameraController(this.el.videoCamera)
 
 
             })
@@ -257,7 +259,7 @@ class WhatsAppController {
 
                 this.el.panelDocumentPreview.css({
 
-                    'height': 'calc(100% - 120px);'
+                    'height': '100%'
                 });
 
             })
