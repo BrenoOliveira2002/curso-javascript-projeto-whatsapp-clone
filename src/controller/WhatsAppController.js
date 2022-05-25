@@ -203,7 +203,7 @@ class WhatsAppController {
 
             this.el.btnAttachCamera.on('click', e=> {
 
-                this.el.panelMessagesContainer.hide();
+                this.closeAllMainPanel()
                 this.el.panelCamera.addClass('open');
                 this.el.panelCamera.css({
 
@@ -246,20 +246,82 @@ class WhatsAppController {
 
                 this.closeAllMainPanel();
 
-                this.el.panelDocumentPreview.addClass
+                this.el.panelDocumentPreview.addClass('open')
 
-                this.el.panelDocumentPrevie.css({
+                this.el.panelDocumentPreview.css({
 
                     'height': 'calc(100% - 120px);'
                 });
 
             })
 
+            this.el.btnClosePanelDocumentPreview.on('click',e => {
+
+                this.closeAllMainPanel();
+                this.el.panelMessagesContainer.show();
+                
+            })
+
+            this.el.btnSendDocument.on('click', e => {
+
+                console.log("sendDocument")
+            })
+
             this.el.btnAttachContact.on('click', e=> {
 
-                console.log("contact")
+                this.el.modalContacts.show();
+            })
+
+            this.el.btnCloseModalContacts.on('click', e => {
+
+                this.el.modalContacts.hide();
+            })
+
+            this.el.btnSendMicrophone.on('click', e => {
+
+                this.el.recordMicrophone.show();
+                this.el.btnSendMicrophone.hide();
+                this.startRecordMicrophoneTime();
+            })
+
+            this.el.btnCancelMicrophone.on('click', e => {
+
+                this.closeRecordMicrophone()
+
+
+            })
+
+            this.el.btnFinishMicrophone.on('click', e => {
+
+                this.closeRecordMicrophone()
+
+                
             })
         }
+
+            startRecordMicrophoneTime(){
+
+                let start = Date.now()
+
+                this._recordMicroPhoneInterval = setInterval(() => {
+
+                    this.el.recordMicrophoneTimer.innerHTML = (Date.now() - start)
+
+
+                }, 100)
+            }
+        
+
+            closeRecordMicrophone(){
+
+                this.el.recordMicrophone.hide()
+
+                this.el.btnSendMicrophone.show()
+
+                clearInterval(this._recordMicroPhoneInterval)
+            }
+
+        
 
         closeAllMainPanel(){
 
