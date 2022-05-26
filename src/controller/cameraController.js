@@ -1,5 +1,6 @@
-class CameraController{
+export class CameraController{
 
+    
     constructor(videoEl) {
 
 
@@ -48,8 +49,8 @@ class CameraController{
        
                // convertendo para base64
                return canvas.toDataURL(mimeType);
-       
-           }
+
+          }
        
        
        }
