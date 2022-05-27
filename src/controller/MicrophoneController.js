@@ -99,6 +99,8 @@ startRecorder() {
 
         this._mediaRecorder.start();
 
+        this.startTimer()
+
 
     }
 
@@ -112,16 +114,28 @@ stopRecorder() {
         if (this.isAvailable()){
 
             this._mediaRecorder.stop()
-
             this.stop();
-
-
+            this.stopTimer();
         }
-
-
     }
+}
 
+
+startTimer(){
+
+    let start = Date.now()
+
+    this._recordMicroPhoneInterval = setInterval(() => {
+
+        this.trigger('recordtimer', (Date.now() - start))
+
+
+    }, 100)
 
 }
 
+stopTimer(){
+
+    clearInterval(this._recordMicroPhoneInterval)
+}
 }
