@@ -8,7 +8,11 @@ export class WhatsAppController {
 
     constructor() {
 
-        console.log()
+        console.log("fon")
+
+        this._firebase = new FireBase();
+
+        this.initAuth();
 
         this.elementsPrototype(); 
 
@@ -16,7 +20,30 @@ export class WhatsAppController {
 
         this.initEvents();
 
-        this._firebase = new FireBase();
+    
+    }
+
+    initAuth(){
+
+        this._firebase.initAuth()
+        
+        .then(response => {
+
+            this._user = response.user;
+
+            this.el.appContent.css({
+
+                display: 'flex'
+
+                });
+            })
+        .catch(err => {
+
+            console.error(err);
+
+        })
+
+
     }
 
     loadElements(){
