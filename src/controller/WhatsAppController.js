@@ -2,6 +2,7 @@ import {Format} from './../utils/Format';
 import {CameraController} from './cameraController';
 import {MicrophoneController} from './MicrophoneController';
 import {DocumentPreviewController} from './documentPreviewController';
+import { FireBase } from '../utils/Firebase';
 
 export class WhatsAppController {
 
@@ -14,6 +15,8 @@ export class WhatsAppController {
         this.loadElements();
 
         this.initEvents();
+
+        this._firebase = new FireBase();
     }
 
     loadElements(){
@@ -397,7 +400,7 @@ export class WhatsAppController {
             this.el.btnSendMicrophone.on('click', e => {
 
                 this.el.recordMicrophone.show();
-                this.el.btnSendMicrophone.hide();  
+                this.el.btnSendMicrophone.hide();   
 
                 this._microphoneController =  new MicrophoneController();
 
