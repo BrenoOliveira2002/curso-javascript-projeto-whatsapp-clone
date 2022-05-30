@@ -239,8 +239,17 @@ export class WhatsAppController {
 
             this.el.btnSavePanelEditProfile.on('click', e => {
 
+                this.el.btnSavePanelEditProfile.disabled = true;
 
-                console.log(this.el.inputNamePanelEditProfile.innerHTML)
+                this._user.name = this.el.inputNamePanelEditProfile.innerHTML
+
+                this._user.save().then(()=> {
+
+                    this.el.btnSavePanelEditProfile.disabled = false;
+
+
+                })
+
             })
 
             this.el.formPanelAddContact.on('subtmit', e=> {
