@@ -1,4 +1,4 @@
-import { ClassEvent } from "../../utils/ClassEvent";
+import { ClassEvent } from "./../utils/ClassEvent";
 export class Model extends ClassEvent{
 
     constructor(){

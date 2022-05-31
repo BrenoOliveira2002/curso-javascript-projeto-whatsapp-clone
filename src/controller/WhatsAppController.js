@@ -3,7 +3,7 @@ import {CameraController} from './cameraController';
 import {MicrophoneController} from './MicrophoneController';
 import {DocumentPreviewController} from './documentPreviewController';
 import { FireBase } from '../utils/Firebase';
-import { User } from './model/User';
+import { User } from '../Model/User';
 
 export class WhatsAppController {
 
@@ -51,6 +51,8 @@ export class WhatsAppController {
                 photo2.show()
 
                 }
+
+                initContacts()
             });
 
                 this._user.name = response.user.displayName
@@ -252,34 +254,36 @@ export class WhatsAppController {
 
             })
             
-            this.el.formPanelAddContact.on('submit', e=> {
+            this.el.formPanelAddContact.on('submit', e => {
 
                 e.preventDefault();
-
-                let formData = new FormData( this.el.formPanelAddContact);
-
-                let contact = new User(formData.get('email'))
-
+    
+                let formData = new FormData(this.el.formPanelAddContact);
+    
+    
+                let contact = new User(formData.get('email'));
+    
                 contact.on('datachange', data => {
-
-                if (data.name) {
-
-                    this.el.addContact(contact).then(()=> {
-
-                        this.el.btnClosePanelAddContact
-
-                        console.info('contact was add') 
-                    })
-                 
-
-                }
-                else {
-
-                console.error('User not found')
-
-                }
-
-            })
+    
+                    if (data.name) {
+    
+                        this._user.addContact(contact).then(() => {
+    
+                            this.el.btnClosePanelAddContact.click();
+                            console.info('contato foi adicionado!');
+    
+                        });
+    
+                    } else {
+                        console.error('Usuario nao foi encontrado.');
+                    }
+    
+    
+                })
+    
+    
+    
+            });
 
             this.el.contactsMessagesList.querySelectorAll('.contact-item').forEach(item => {
 
@@ -616,8 +620,8 @@ export class WhatsAppController {
 
 
             })
-        })
         }
+
 
             
         
@@ -660,4 +664,5 @@ export class WhatsAppController {
 
 
         }
-    }   
+        
+    }
