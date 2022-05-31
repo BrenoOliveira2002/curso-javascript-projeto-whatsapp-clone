@@ -346,6 +346,11 @@ export class Message extends Model {
         return div;
     }
 
+    static send(chatId, content){
+
+        Message.getRef(chatId)
+    }
+
 }
 
 
