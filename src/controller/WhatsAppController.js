@@ -5,6 +5,7 @@ import {DocumentPreviewController} from './documentPreviewController';
 import { FireBase } from '../utils/Firebase';
 import { User } from '../Model/User';
 import { Chat } from '../Model/Chat'
+import { Message} from '../Model/Message'
 
 export class WhatsAppController {
 
@@ -168,9 +169,12 @@ export class WhatsAppController {
 
     setActiveChat(contact){
 
-        this._contactActive= contact;
+        if (this._contactActive) {
 
+            Message.getRef(this._contactAtive.chatId).onSnapshot(() =>{})
+        }
 
+        this._contactActive = contact;
 
         this.el.activeName.innerHTML = contact.name
 
@@ -189,6 +193,29 @@ export class WhatsAppController {
         this.el.main.css({
 
             display:'flex'
+        })
+
+        Message.getRef(this._contactActive.chatId).orderBy('timeStamp')
+        .onSnapshot(docs => {
+
+            this.el.panelMessagesContainer.innerHTML = ''
+
+            docs.forEach(doc => {
+
+                let data = doc.data();
+                data.id = doc.id;
+                let message = new Message()
+
+                message.fromJSON(data);
+
+                let me = (data.from == this._user.email)
+
+                let view = message.getViewElement(me)
+
+                this.el.panelMessagesContainer.appendChild(view)
+
+
+            })
         })
     }
 
@@ -692,14 +719,17 @@ export class WhatsAppController {
 
             this.el.btnSend.on('click', e => {
 
-                Message.send(this._contactActive.chatId, this.el.inputText.innerHTML)
-
-                this.el.inputText.innerHTML = ''
-
-                this.el.panelEmojis.removeClass('open')
-
+                Message.send(this._contactActive.chatId,
+                     this.el.inputText.innerHTML,
+                     this._user.email,
+                     'text',
+                     this.el.inputText.innerHTML    
         
-            })
+            );
+
+            this.el.inputText.innerHTML = ''
+            this.el.panelEmojis.removeClass('open')
+                })
 
             this.el.btnEmojis.on('click', e => {
 
