@@ -6,6 +6,8 @@ import { FireBase } from '../utils/Firebase';
 import { User } from '../Model/User';
 import { Chat } from '../Model/Chat'
 import { Message} from '../Model/Message'
+import { Base64 } from "../utils/Base64";
+import { ContactsController } from './ContactsController';
 
 export class WhatsAppController {
 
@@ -234,7 +236,16 @@ export class WhatsAppController {
 
                 this.el.panelMessagesContainer.appendChild(view)
 
-                } else if (me){
+                } else {
+
+                    let view = message.getViewElement(me);
+
+                    this.el.panelMessagesContainer.querySelector('#' + data.id).innerHTML = view.innerHTML
+
+
+                }
+                
+                if (this.el.panelMessagesContainer.querySelector('#_' + data.id) && me){
 
                    let msgEl = this.el.panelMessagesContainer.querySelector('#_' + data.id)
 
@@ -654,7 +665,9 @@ export class WhatsAppController {
 
                 if (this.el.inputDocument.files.length) {
 
-                    
+                    this.el.panelDocumentPreview.css({ 
+                        'height': '100%'
+                    })
 
                 let file = this.el.inputDocument.files[0];
 
@@ -733,17 +746,59 @@ export class WhatsAppController {
 
             this.el.btnSendDocument.on('click', e => {
 
-                console.log("sendDocument")
+                let file = this.el.inputDocument.files[0]
+
+                let base64 = this.el.imgPanelDocumentPreview.src;
+
+                if(file.type === 'application/pdf') {
+
+                    Base64.toFile(base64).then(filePreview=>{
+
+
+                    Message.SendDocument(
+                        this._contactActive.chatId,
+                        this._user.email,
+                        file,
+                        base64,
+                        this.el.infoPanelDocumentPreview.innerHTML)
+                      })
+
+
+                }else {
+
+                    Message.SendDocument(
+                        this._contactActive.chatId,
+                        this._user.email,
+                        file
+                    )}
+
+                    this.el.btnClosePanelDocumentPreview.click()
+
+               
+
             })
 
             this.el.btnAttachContact.on('click', e=> {
 
                 this.el.modalContacts.show();
+
+                this._contactsController = new ContactsController(this.el.modalContacts, this._user);
+
+                this._contactsController.on('select', contact => {
+
+                    Message.sendContact(this._contactActive.chatId,
+                        this._user.email,
+                        contact
+                        )
+                })
+
+                this._contactsController.open();
             })
 
             this.el.btnCloseModalContacts.on('click', e => {
 
-                this.el.modalContacts.hide();
+                this.el.ContactsController.close();
+
             })
 
             this.el.btnSendMicrophone.on('click', e => {
