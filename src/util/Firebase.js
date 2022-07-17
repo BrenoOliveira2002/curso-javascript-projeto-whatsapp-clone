@@ -1,6 +1,6 @@
 import firebase from "firebase";
 require("firebase/firestore");
-export class FireBase {
+export class Firebase {
 
     constructor(){
 
@@ -15,11 +15,10 @@ export class FireBase {
             measurementId: "G-DKYP1XQ5DP"  
         }
 
-        this.init()
-
+        this.init();
     }
 
-   init() {
+    init() {
         if (!window._initializedFirebase) {
             firebase.initializeApp(this._config)
             firebase.firestore().settings({
@@ -29,42 +28,30 @@ export class FireBase {
         };
     };
 
-    static db(){
-
+    static db() {
         return firebase.firestore();
-
     }
-
-    static hd(){
-
+    static hd() {
         return firebase.storage();
     }
 
+
     initAuth() {
-
-
-        return new Promise ((s, f)=> {
-
+        return new Promise((s, f) => {
             let provider = new firebase.auth.GoogleAuthProvider();
-
             firebase.auth().signInWithPopup(provider)
-            
-            .then(result => {
+                .then(result => {
+                    let token = result.credential.accessToken;
+                    let user = result.user;
+                    s({
+                        user, token
 
-                let token = result.credential.accessToken;
-                let user = result.user;
-
-                s({
-                    user,
-                     token
+                    });
                 })
-            })
-            .catch(err=> {
-
-                f(err);
-            })
-        })
+                .catch(err => {
+                    f(err);
+                });
+        });
     }
-
-
 }
+
